@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   configserver:
-    image: eazybytes/configserver:latest
+    image: saiviswateja1412/easybytespractise:configserver
     mem_limit: 700m
     ports:
       - "8071:8071"
