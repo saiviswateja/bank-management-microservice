@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   configserver:
-    image: eazybytes/configserver:latest
+    image: saiviswateja1412/easybytespractise:configserver
     mem_limit: 700m
     ports:
       - "8071:8071"
@@ -11,7 +11,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: default
   accounts:
-    image: eazybytes/accounts:latest
+    image: saiviswateja1412/easybytespractise:accounts
     mem_limit: 700m
     ports:
       - "8080:8080"
@@ -29,7 +29,7 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
   loans:
-    image: eazybytes/loans:latest
+    image: saiviswateja1412/easybytespractise:loans
     mem_limit: 700m
     ports:
       - "8090:8090"
@@ -48,7 +48,7 @@ services:
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
     
   cards:
-    image: eazybytes/cards:latest
+    image: saiviswateja1412/easybytespractise:cards
     mem_limit: 700m
     ports:
       - "9000:9000"
