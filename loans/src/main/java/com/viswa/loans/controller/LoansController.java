@@ -8,6 +8,8 @@ import com.viswa.loans.model.Customer;
 import com.viswa.loans.model.Loans;
 import com.viswa.loans.model.Properties;
 import com.viswa.loans.repository.LoansRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @RestController
 public class LoansController {
+    private static final Logger logger  = LoggerFactory.getLogger(LoansController.class);
 
     @Autowired
     private LoansRepository loansRepository;
@@ -27,6 +30,8 @@ public class LoansController {
 
     @PostMapping("/myLoans")
     public List<Loans> getLoansDetails(@RequestBody Customer customer) {
+        logger.info("Called loan details function");
+        logger.info("Ended of loan details function");
         List<Loans> loans = loansRepository.findByCustomerIdOrderByStartDtDesc(customer.getCustomerId());
         if (loans != null) {
             return loans;

@@ -8,6 +8,8 @@ import com.viswa.cards.model.Cards;
 import com.viswa.cards.model.Customer;
 import com.viswa.cards.model.Properties;
 import com.viswa.cards.repoitory.CardsRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @RestController
 public class CardsController {
+    private static final Logger logger  = LoggerFactory.getLogger(CardsController.class);
     @Autowired
     private CardsRepository cardsRepository;
 
@@ -26,6 +29,8 @@ public class CardsController {
 
     @PostMapping("/myCards")
     public List<Cards> getCardDetails(@RequestBody Customer customer) {
+        logger.info("Started of card details function");
+        logger.info("Ended of card details function");
         List<Cards> cards = cardsRepository.findByCustomerId(customer.getCustomerId());
         if (cards != null) {
             return cards;

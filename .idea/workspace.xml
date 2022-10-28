@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4711a647-0488-4246-be3e-148214c77550" name="Changes" comment="" />
+    <list default="true" id="4711a647-0488-4246-be3e-148214c77550" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/cloud-gateway-for-banks-application/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cloud-gateway-for-banks-application/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose/default/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose/default/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/launch-deps.sh" beforeDir="false" afterPath="$PROJECT_DIR$/launch-deps.sh" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

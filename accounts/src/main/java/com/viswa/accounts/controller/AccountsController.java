@@ -8,6 +8,8 @@ import com.viswa.accounts.repository.AccountRepository;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -22,6 +24,8 @@ import java.util.List;
 
 @RestController
 public class AccountsController {
+
+    private static final Logger logger  = LoggerFactory.getLogger(AccountsController.class);
 
     @Autowired
     private AccountRepository accountRepository;
@@ -69,6 +73,7 @@ public class AccountsController {
     @CircuitBreaker(name = "detailsForCustomerSupportApp", fallbackMethod = "myCustmerDetailsFallback")
 //    @Retry(name = "detailsForCustomerSupportApp", fallbackMethod = "myCustmerDetailsFallback")
     public CustomerDetails myCustomerDetails(@RequestBody Customer customer) {
+        logger.info("myCustomer details method started");
         Accounts accounts = accountRepository.findByCustomerId(customer.getCustomerId());
         List<Loans> loansList = loansFeignClient.getLoanDetails(customer);
         List<Cards> cardsList = cardsFeignClient.getCardDetails(customer);
@@ -77,7 +82,7 @@ public class AccountsController {
         customerDetails.setAccounts(accounts);
         customerDetails.setCards(cardsList);
         customerDetails.setLoans(loansList);
-
+        logger.info("myCustomer details method ended");
         return customerDetails;
     }
 
