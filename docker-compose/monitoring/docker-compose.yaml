@@ -1,0 +1,124 @@
+version: "3.8"
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+        - "9090:9090"
+    volumes:
+      - ./prometheus.yaml:/etc/prometheus/prometheus.yaml
+    networks:
+      - eazybank
+
+  configserver:
+    image: saiviswateja1412/easybytespractise:configserver
+    mem_limit: 700m
+    ports:
+      - "8071:8071"
+    networks:
+     - eazybank
+
+  eurekaserver:
+    image: saiviswateja1412/easybytespractise:eurekaserver
+    mem_limit: 700m
+    ports:
+      - "8070:8070"
+    networks:
+      - eazybank
+    depends_on:
+      - configserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    environment:
+        SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+
+  accounts:
+    image: saiviswateja1412/easybytespractise:accounts
+    mem_limit: 700m
+    ports:
+      - "8080:8080"
+    networks:
+      - eazybank
+    depends_on:
+      - configserver
+      - eurekaserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+
+  loans:
+    image: saiviswateja1412/easybytespractise:loans
+    mem_limit: 700m
+    ports:
+      - "8090:8090"
+    networks:
+      - eazybank
+    depends_on:
+      - configserver
+      - eurekaserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    
+  cards:
+    image: saiviswateja1412/easybytespractise:cards
+    mem_limit: 700m
+    ports:
+      - "9000:9000"
+    networks:
+      - eazybank
+    depends_on:
+      - configserver
+      - eurekaserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 30s
+        max_attempts: 3
+        window: 120s
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+
+  gatewayserver:
+    image: saiviswateja1412/easybytespractise:cloud-gateway-for-banks-application
+    mem_limit: 700m
+    ports:
+      - "8072:8072"
+    networks:
+      - eazybank
+    depends_on:
+      - configserver
+      - eurekaserver
+      - cards
+      - loans
+      - accounts
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 45s
+        max_attempts: 3
+        window: 180s
+    environment:
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    
+networks:
+  eazybank:
+  
